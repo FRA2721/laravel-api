@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // create my route
-Route::get('/test', function(){
-    return response()->json();
-});
+// Route::get('/post', function(){
+//     return response()->json([
+
+//     ]);
+// });
+
+Route::get("/posts", [PostController::class, "index"]);
