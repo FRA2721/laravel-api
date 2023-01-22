@@ -8,13 +8,13 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    // create function to show all data
+    // create function to show all data (with type & technologies)
     public function index()
-
     {
-        $posts = Post::all();
+        $posts = Post::with("type", "technologies")->get();
+        
         return response()->json([
-            "success" => true, //request verdict
+            "success" => true, //check
             "response" => $posts
         ]);
     }
