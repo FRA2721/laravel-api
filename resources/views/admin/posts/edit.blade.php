@@ -1,0 +1,68 @@
+@extends('layouts.admin')
+
+@section('content')
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-8">
+        <h1 class="text-center mb-3">Post: {{ $post->title }}</h1>
+          @if ($errors->any())
+            <div class="alert alert-danger">
+              <ul>
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+        <form action="{{ route('admin.posts.update', $post->slug) }}" method="POST">
+            @method('PUT')
+            @csrf
+
+            <div class="mb-3">
+              <label for="title" class="form-label">Title:</label>
+              <input type="text" class="form-control" id="title" name="title"value="{{ old('title', $post->title) }}">
+            </div>
+
+            <div class="mb-3">
+              <label for="types">Type:</label>
+              <select name="type_id" id="types" class="form-select">
+                <option value="">Chose</option>
+                @foreach ($types as $type)
+                  <option value="{{ $type->id }}" @selected(old('type_id', $post->type_id) == $type->id)>{{ $type->name }}</option>
+                @endforeach
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <h5 class="mb-2">Technologies:</h5>
+              @foreach ($technologies as $technology)
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="{{ $technology->id }}" id="technologies-{{ $technology->id }}" name="technologies[]" @checked($post->technologies->contains($technology))>
+                  <label class="form-check-label" for="technologies-{{ $technology->id }}">{{ $technology->name }}</label>
+                </div>
+              @endforeach
+            </div>
+
+            <div class="mb-3">
+              <label for="link" class="form-label">Link:</label>
+              <input type="text" class="form-control" id="link" name="link"value="{{ old('link', $post->link) }}">
+            </div>
+
+            <div class="mb-3">
+              <label for="cover_image" class="form-label">Cover image:</label>
+              <input type="file" class="form-control" id="cover_image" name="cover_image">
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Description:</label>
+              <textarea class="form-control" id="description" name="description" rows="3">{{ old('description', $post->description) }}</textarea>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+              <button type="submit" class="btn btn-success">Edit</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+@endsection
